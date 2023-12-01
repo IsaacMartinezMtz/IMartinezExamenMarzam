@@ -1,0 +1,141 @@
+﻿@model ML.Medicamento
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Formulario Pedidos</h2>
+
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th class="visually-hidden" scope="col">IdUsuarios</th>
+            <th scope="col">IdMedicamento</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Ingresa la Cantidad</th>
+           
+            <th scope="col" class="visually-hidden"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ML.Medicamento medicamento in Model.Mediacementos)
+        {
+            medicamento.IdUsuario = Convert.ToInt16(Session["IdUsuario"]);
+            <tr>
+                <td class="visually-hidden">@medicamento.IdUsuario</td>
+                <td>@medicamento.IdMedicamneto</td>
+                <td>@medicamento.Nombre</td>
+                <td class="precio" id="precio">@medicamento.Precio</td>
+                <td class="cantidad">0</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<center><div>
+    <button type="button" class="btn btn-outline-success" onclick="Add()">Success</button>
+</div></center>
+
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    function calcular(precio) {
+        //var cantidad = document.getElementById('txtCantidad');
+        //var cantidad = document.getElementById("txtCantidad").value;
+        var cantidad = $('#txtCantidad').val();
+        var suma = precio * cantidad;
+        $('#txtTotal').val(suma);
+        var cantidad = 0;
+
+       
+
+    }
+    function Add() {
+        var table = document.getElementById('myTable');
+        
+        var jsonData = tableToJson(table);
+        console.log(JSON.stringify(jsonData, null, 2));
+
+        $.each(jsonData, function (i, entidad) {
+            var json = {
+                Usuario: {
+                    "IdUsuario": entidad.idusuarios
+                },
+                Medicamento: {
+                    "IdMedicamneto": entidad.idmedicamento 
+                },
+                Cantidad: entidad.ingresalacantidad,
+                Costo: entidad.precio
+            }
+
+            if (json.Cantidad > 0) {
+                $.ajax({
+
+                    url: 'http://localhost:35313/api/pedido/',
+                    type: 'POST',
+                    datatype: 'JSON',
+                    data: json,
+                    success: function (result) {
+                        alert("Medicamento Agregado exitosamente al pedido");
+                       
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert('Error en la consulta.' + result.responseJSON.ErrorMessage); //es un error de JSON, y es porque puede venir vacio o null
+                    }
+                });
+            }
+
+        });
+
+    }
+    
+    function tableToJson(table) {
+        var data = [];
+
+        // Primera fila necesita ser encabezados
+        var headers = [];
+        for (var i = 0; i < table.rows[0].cells.length; i++) {
+            headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, '');
+        }
+
+        // Ir a través de las celdas
+        for (var i = 1; i < table.rows.length; i++) {
+            var tableRow = table.rows[i];
+            var rowData = {};
+
+            for (var j = 0; j < tableRow.cells.length; j++) {
+                rowData[headers[j]] = tableRow.cells[j].innerHTML;
+            }
+
+            data.push(rowData);
+        }
+
+        return data;
+    }
+
+    //Convertir El td de la columna cantidad a una entrada de texto
+    // Selecciona todos los elementos td en tu tabla
+    var tds = document.querySelectorAll("#myTable td.cantidad");
+
+    // Añade un evento de clic a cada td
+    tds.forEach(function (td) {
+        td.addEventListener("click", function () {
+            // Crea un nuevo elemento de entrada
+            var input = document.createElement("input");
+            input.value = this.innerText;
+
+            // Reemplaza el td con el input
+            this.replaceWith(input);
+
+            // Añade un evento de desenfoque al input
+            input.addEventListener("blur", function () {
+                // Crea un nuevo td
+                var td = document.createElement("td");
+                td.innerText = this.value;
+
+                // Reemplaza el input con el td
+                this.replaceWith(td);
+            });
+        });
+    });
+</script>

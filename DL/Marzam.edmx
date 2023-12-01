@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MarzanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Mediamento">
+          <Key>
+            <PropertyRef Name="IdMedicamento" />
+          </Key>
+          <Property Name="IdMedicamento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Precio" Type="decimal" Precision="6" Scale="2" />
+        </EntityType>
+        <EntityType Name="Pedidos">
+          <Key>
+            <PropertyRef Name="IdPedido" />
+          </Key>
+          <Property Name="IdPedido" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+          <Property Name="IdMedicamento" Type="int" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="Total" Type="decimal" Precision="20" Scale="2" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="30" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="30" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="30" />
+          <Property Name="UserName" Type="varchar" MaxLength="20" />
+          <Property Name="Password" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <Association Name="FK__Pedidos__IdMedic__15502E78">
+          <End Role="Mediamento" Type="Self.Mediamento" Multiplicity="0..1" />
+          <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mediamento">
+              <PropertyRef Name="IdMedicamento" />
+            </Principal>
+            <Dependent Role="Pedidos">
+              <PropertyRef Name="IdMedicamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pedidos__IdUsuar__145C0A3F">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pedidos" Type="Self.Pedidos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Pedidos">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetUserName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="MedicamentosGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="PedidoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+          <Parameter Name="IdMedicamento" Type="int" Mode="In" />
+          <Parameter Name="Cantidad" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="PedidoDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPedido" Type="int" Mode="In" />
+        </Function>
+        <Function Name="PedidosGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="PedidosGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPedido" Type="int" Mode="In" />
+        </Function>
+        <Function Name="PedidoUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPedido" Type="int" Mode="In" />
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+          <Parameter Name="IdMedicamento" Type="int" Mode="In" />
+          <Parameter Name="Cantidad" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="decimal" Mode="In" />
+        </Function>
+        <EntityContainer Name="MarzanModelStoreContainer">
+          <EntitySet Name="Mediamento" EntityType="Self.Mediamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pedidos" EntityType="Self.Pedidos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Pedidos__IdMedic__15502E78" Association="Self.FK__Pedidos__IdMedic__15502E78">
+            <End Role="Mediamento" EntitySet="Mediamento" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pedidos__IdUsuar__145C0A3F" Association="Self.FK__Pedidos__IdUsuar__145C0A3F">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MarzanModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Mediamento">
+          <Key>
+            <PropertyRef Name="IdMedicamento" />
+          </Key>
+          <Property Name="IdMedicamento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="Decimal" Precision="6" Scale="2" />
+          <NavigationProperty Name="Pedidos" Relationship="Self.FK__Pedidos__IdMedic__15502E78" FromRole="Mediamento" ToRole="Pedidos" />
+        </EntityType>
+        <EntityType Name="Pedido">
+          <Key>
+            <PropertyRef Name="IdPedido" />
+          </Key>
+          <Property Name="IdPedido" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <Property Name="IdMedicamento" Type="Int32" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="Total" Type="Decimal" Precision="20" Scale="2" />
+          <NavigationProperty Name="Mediamento" Relationship="Self.FK__Pedidos__IdMedic__15502E78" FromRole="Pedidos" ToRole="Mediamento" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Pedidos__IdUsuar__145C0A3F" FromRole="Pedidos" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Pedidos" Relationship="Self.FK__Pedidos__IdUsuar__145C0A3F" FromRole="Usuario" ToRole="Pedidos" />
+        </EntityType>
+        <Association Name="FK__Pedidos__IdMedic__15502E78">
+          <End Role="Mediamento" Type="Self.Mediamento" Multiplicity="0..1" />
+          <End Role="Pedidos" Type="Self.Pedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mediamento">
+              <PropertyRef Name="IdMedicamento" />
+            </Principal>
+            <Dependent Role="Pedidos">
+              <PropertyRef Name="IdMedicamento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pedidos__IdUsuar__145C0A3F">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pedidos" Type="Self.Pedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Pedidos">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MarzanEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Mediamentoes" EntityType="Self.Mediamento" />
+          <EntitySet Name="Pedidos" EntityType="Self.Pedido" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK__Pedidos__IdMedic__15502E78" Association="Self.FK__Pedidos__IdMedic__15502E78">
+            <End Role="Mediamento" EntitySet="Mediamentoes" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pedidos__IdUsuar__145C0A3F" Association="Self.FK__Pedidos__IdUsuar__145C0A3F">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Pedidos" EntitySet="Pedidos" />
+          </AssociationSet>
+          <FunctionImport Name="PedidoAdd">
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+            <Parameter Name="IdMedicamento" Mode="In" Type="Int32" />
+            <Parameter Name="Cantidad" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="PedidoDelete">
+          <Parameter Name="IdPedido" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PedidoUpdate">
+            <Parameter Name="IdPedido" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+            <Parameter Name="IdMedicamento" Mode="In" Type="Int32" />
+            <Parameter Name="Cantidad" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="PedidosGetAll" ReturnType="Collection(MarzanModel.PedidosGetAll_Result)" />
+          <FunctionImport Name="PedidosGetById" ReturnType="Collection(MarzanModel.PedidosGetById_Result)">
+          <Parameter Name="IdPedido" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MedicamentosGetAll" ReturnType="Collection(MarzanModel.MedicamentosGetAll_Result)" />
+          <FunctionImport Name="GetUserName" ReturnType="Collection(MarzanModel.GetUserName_Result)">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="PedidosGetAll_Result">
+          <Property Type="Int32" Name="IdPedido" Nullable="false" />
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="IdMedicamento" Nullable="false" />
+          <Property Type="String" Name="NombreMedicamento" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="6" Scale="2" />
+          <Property Type="Int32" Name="Cantidad" Nullable="true" />
+          <Property Type="Decimal" Name="Total" Nullable="true" Precision="20" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="PedidosGetById_Result">
+          <Property Type="Int32" Name="IdPedido" Nullable="false" />
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="IdMedicamento" Nullable="false" />
+          <Property Type="String" Name="NombreMedicamento" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="6" Scale="2" />
+          <Property Type="Int32" Name="Cantidad" Nullable="true" />
+          <Property Type="Decimal" Name="Total" Nullable="true" Precision="20" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="MedicamentosGetAll_Result">
+          <Property Type="Int32" Name="IdMedicamento" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Precio" Nullable="true" Precision="6" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="GetUserName_Result">
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="15" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MarzanModelStoreContainer" CdmEntityContainer="MarzanEntities">
+          <EntitySetMapping Name="Mediamentoes">
+            <EntityTypeMapping TypeName="MarzanModel.Mediamento">
+              <MappingFragment StoreEntitySet="Mediamento">
+                <ScalarProperty Name="IdMedicamento" ColumnName="IdMedicamento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pedidos">
+            <EntityTypeMapping TypeName="MarzanModel.Pedido">
+              <MappingFragment StoreEntitySet="Pedidos">
+                <ScalarProperty Name="IdPedido" ColumnName="IdPedido" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="IdMedicamento" ColumnName="IdMedicamento" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="MarzanModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="PedidoAdd" FunctionName="MarzanModel.Store.PedidoAdd" />
+          <FunctionImportMapping FunctionImportName="PedidoDelete" FunctionName="MarzanModel.Store.PedidoDelete" />
+          <FunctionImportMapping FunctionImportName="PedidoUpdate" FunctionName="MarzanModel.Store.PedidoUpdate" />
+          <FunctionImportMapping FunctionImportName="PedidosGetAll" FunctionName="MarzanModel.Store.PedidosGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MarzanModel.PedidosGetAll_Result">
+                <ScalarProperty Name="IdPedido" ColumnName="IdPedido" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="IdMedicamento" ColumnName="IdMedicamento" />
+                <ScalarProperty Name="NombreMedicamento" ColumnName="NombreMedicamento" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PedidosGetById" FunctionName="MarzanModel.Store.PedidosGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MarzanModel.PedidosGetById_Result">
+                <ScalarProperty Name="IdPedido" ColumnName="IdPedido" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="IdMedicamento" ColumnName="IdMedicamento" />
+                <ScalarProperty Name="NombreMedicamento" ColumnName="NombreMedicamento" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MedicamentosGetAll" FunctionName="MarzanModel.Store.MedicamentosGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MarzanModel.MedicamentosGetAll_Result">
+                <ScalarProperty Name="IdMedicamento" ColumnName="IdMedicamento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetUserName" FunctionName="MarzanModel.Store.GetUserName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MarzanModel.GetUserName_Result">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
